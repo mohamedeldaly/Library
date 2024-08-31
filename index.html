@@ -1,133 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
     <style>
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            padding: 16px;
-            text-align: center;
-            background-color: #f1f1f1;
-            width: 200px;
-            margin: 20px;
-        }
-        .vertical-a {
-            vertical-align: middle;
-        }
-        #container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
+      .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+        width: 200px;
+        margin: 20px;
+      }
+      .vertical-a {
+        vertical-align: middle;
+      }
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
     </style>
+  </head>
+  <body>
     <h1>My Library</h1>
-<dialog id="favDialog">
-    <form>
+    <dialog id="favDialog">
+      <form>
         <div>
-            <h1>My Library</h1>
-            <h2>Add a book</h2>
-            <p>
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" required>
-            </p>
-            <p>
-                <label for="author">Author</label>
-                <input type="text" name="author" id="author" required>
-            </p>
-            <p>
-                <label for="pages">Pages</label>
-                <input type="number" name="pages" id="pages" required>
-            </p>
-            <p>
-                <label class="vertical-a" for="read">Read</label>
-                <input class="vertical-a" type="checkbox" name="read" id="read">
-            </p>
+          <h1>My Library</h1>
+          <h2>Add a book</h2>
+          <p>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" required />
+          </p>
+          <p>
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author" required />
+          </p>
+          <p>
+            <label for="pages">Pages</label>
+            <input type="number" name="pages" id="pages" required />
+          </p>
+          <p>
+            <label class="vertical-a" for="read">Read</label>
+            <input class="vertical-a" type="checkbox" name="read" id="read" />
+          </p>
         </div>
-      <div>
-        <button id="closeBtn" value="cancel" formmethod="dialog">Close</button>
-        <button id="confirmBtn" value="default">Confirm</button>
-      </div>
-    </form>
-  </dialog>
-  <p>
-    <button id="showDialog">NEW BOOK</button>
-  </p>
-    <div id="container">
-    </div>
-</div> 
+        <div>
+          <button id="closeBtn" value="cancel" formmethod="dialog">
+            Close
+          </button>
+          <button id="confirmBtn">Confirm</button>
+        </div>
+      </form>
+    </dialog>
+    <p>
+      <button id="showDialog">NEW BOOK</button>
+    </p>
+    <div id="container"></div>
     <script>
-        const container = document.querySelector('#container');
-        let myLibrary = [];
-        const showButton = document.getElementById("showDialog");
-const favDialog = document.getElementById("favDialog");
-const confirmBtn = document.querySelector("#confirmBtn");
-const closeButton = document.querySelector("#closeBtn");
-showButton.addEventListener("click", () => {
-  favDialog.showModal();
-});
-confirmBtn.addEventListener("click", () => {
-    const title = document.querySelector("#title").value;
-    const author = document.querySelector("#author").value;
-const pages = document.querySelector("#pages").value;
-const read = document.querySelector("#read");
-class Book {
-    constructor(title, author, pages, read) {
-        this.title = title;
-        this.author = author;
-        this.pages = pages;
-        this.read = read;
-    }
-}
-        let newBook = new Book(title, author, pages, read.checked);
-    function addBookToLibrary() {
-            myLibrary.push(newBook);
+      const container = document.querySelector("#container");
+      let myLibrary = [];
+      const showButton = document.getElementById("showDialog");
+      const favDialog = document.getElementById("favDialog");
+      const confirmBtn = document.querySelector("#confirmBtn");
+      const closeButton = document.querySelector("#closeBtn");
+      showButton.addEventListener("click", () => {
+        favDialog.showModal();
+      });
+      confirmBtn.addEventListener("click", () => {
+        event.preventDefault();
+        const title = document.querySelector("#title");
+        const author = document.querySelector("#author");
+        const pages = document.querySelector("#pages");
+        if (title.validity.valueMissing) {
+          title.setCustomValidity("I am expecting a title!");
+          title.reportValidity();
+          return;
         }
-    addBookToLibrary();
-    function displayBooks() {
-                const div = document.createElement('div');
-                div.classList.add('card');
-                const title = document.createElement('p');
-                title.textContent = "Title: " + newBook.title;
-                const author = document.createElement('p');
-                author.textContent = "Author: " + newBook.author;
-                const pages = document.createElement('p');
-                pages.textContent = "Pages: " + newBook.pages;
-                const read = document.createElement('label');
-                read.classList.add('vertical-a');
-                read.textContent = "Read";
-                const check = document.createElement('input');
-                check.classList.add('vertical-a');
-                check.type = "checkbox";
-                check.checked = newBook.read;
-                const deleteBtn = document.createElement('button');
-                deleteBtn.style.display = "block";
-                deleteBtn.style.margin = "20px auto 0";
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.addEventListener('click', () => {
-          container.removeChild(div);
-        });
-                div.appendChild(title);
-                div.appendChild(author);
-                div.appendChild(pages);
-                div.appendChild(read);
-                div.appendChild(check);
-                div.appendChild(deleteBtn);
-                container.appendChild(div);
+        if (author.validity.valueMissing) {
+          author.setCustomValidity("I am expecting an author!");
+          author.reportValidity();
+          return;
+        }
+        if (pages.validity.valueMissing) {
+          pages.setCustomValidity("I am expecting pages!");
+          pages.reportValidity();
+          return;
+        }
+        const read = document.querySelector("#read");
+        class Book {
+          constructor(title, author, pages, read) {
+            this.title = title;
+            this.author = author;
+            this.pages = pages;
+            this.read = read;
+          }
+        }
+        let newBook = new Book(
+          title.value,
+          author.value,
+          pages.value,
+          read.checked
+        );
+        myLibrary.push(newBook);
+        function displayBooks() {
+          const div = document.createElement("div");
+          div.classList.add("card");
+          const title = document.createElement("p");
+          title.textContent = "Title: " + newBook.title;
+          const author = document.createElement("p");
+          author.textContent = "Author: " + newBook.author;
+          const pages = document.createElement("p");
+          pages.textContent = "Pages: " + newBook.pages;
+          const read = document.createElement("label");
+          read.classList.add("vertical-a");
+          read.textContent = "Read";
+          const check = document.createElement("input");
+          check.classList.add("vertical-a");
+          check.type = "checkbox";
+          check.checked = newBook.read;
+          const deleteBtn = document.createElement("button");
+          deleteBtn.style.display = "block";
+          deleteBtn.style.margin = "20px auto 0";
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () => {
+            container.removeChild(div);
+          });
+          div.appendChild(title);
+          div.appendChild(author);
+          div.appendChild(pages);
+          div.appendChild(read);
+          div.appendChild(check);
+          div.appendChild(deleteBtn);
+          container.appendChild(div);
         }
         displayBooks();
-});
-closeButton.addEventListener("click", (event) => {
-    event.preventDefault();
-  favDialog.close();
-});
-confirmBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  favDialog.close();
-});
+        favDialog.close();
+      });
+      closeButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        favDialog.close();
+      });
     </script>
-</body>
+  </body>
 </html>
